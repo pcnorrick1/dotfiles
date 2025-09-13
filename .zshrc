@@ -37,6 +37,7 @@ JULIAUP_BIN="$HOME/.juliaup/bin"
 # Starship prompt
 # ==============================
 eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/dotfiles/starship/starship.toml
 
 # ==============================
 # Conda
