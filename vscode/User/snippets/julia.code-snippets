@@ -1,0 +1,18 @@
+{
+  "Function definition": {
+    "prefix": "fn",
+    "body": [
+      "function ${1:name}(${2:args})",
+      "\t$0",
+      "end"
+    ],
+    "description": "Define a Julia function"
+  },
+  "Using common packages": {
+    "prefix": "using",
+    "body": [
+      "using LinearAlgebra, Statistics, Plots"
+    ],
+    "description": "Import common Julia packages"
+  }
+}

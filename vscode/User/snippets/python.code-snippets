@@ -1,0 +1,19 @@
+{
+  "Import common libraries": {
+    "prefix": "imp",
+    "body": [
+      "import numpy as np",
+      "import pandas as pd",
+      "import matplotlib.pyplot as plt"
+    ],
+    "description": "Import NumPy, pandas, matplotlib"
+  },
+  "Define function": {
+    "prefix": "def",
+    "body": [
+      "def ${1:func_name}(${2:args}):",
+      "\t$0"
+    ],
+    "description": "Define a Python function"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Equation environment": {
+    "prefix": "eq",
+    "body": [
+      "\\begin{equation}",
+      "\t$1",
+      "\\end{equation}"
+    ],
+    "description": "Insert an equation environment"
+  },
+  "Align environment": {
+    "prefix": "align",
+    "body": [
+      "\\begin{align}",
+      "\t$1",
+      "\\end{align}"
+    ],
+    "description": "Insert an align environment"
+  },
+  "Theorem environment": {
+    "prefix": "thm",
+    "body": [
+      "\\begin{theorem}",
+      "\t$1",
+      "\\end{theorem}"
+    ],
+    "description": "Insert a theorem environment"
+  }
+}
