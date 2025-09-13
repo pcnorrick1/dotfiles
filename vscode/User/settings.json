@@ -1,0 +1,42 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["-pdf", "-interaction=nonstopmode", "-file-line-error", "-synctex=1", "%DOC%"]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk 🔄",
+      "tools": ["latexmk"]
+    }
+  ],
+
+  // VS Code PDF Viewer
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.view.pdf.ref.viewer": "tabOrBrowser",
+  "latex-workshop.view.pdf.internal.enabled": true,
+
+
+  "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
+  "julia.symbolCacheDownload": true,
+  "julia.enableTelemetry": false,
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "julia.executablePath": "~/.juliaup/bin/julia",
+  "editor.fontSize": 14,
+  "git.openRepositoryInParentFolders": "always",
+  "workbench.startupEditor": "none",
+  "update.showReleaseNotes": false,
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.rulers": [88],
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "julia.numThreads": "auto"
+}

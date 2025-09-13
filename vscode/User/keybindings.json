@@ -1,0 +1,49 @@
+[
+  // Open integrated terminal
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+
+  // Quick file save
+  {
+    "key": "cmd+s",
+    "command": "workbench.action.files.save"
+  },
+
+  // Split editor horizontally
+  {
+    "key": "cmd+\\",
+    "command": "workbench.action.splitEditor"
+  },
+
+  // Move focus between editor groups
+  {
+    "key": "ctrl+1",
+    "command": "workbench.action.focusFirstEditorGroup"
+  },
+  {
+    "key": "ctrl+2",
+    "command": "workbench.action.focusSecondEditorGroup"
+  },
+
+  // Quick comment/uncomment
+  {
+    "key": "cmd+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus"
+  },
+
+  // Run Python file in terminal
+  {
+    "key": "ctrl+shift+r",
+    "command": "python.execInTerminal",
+    "when": "editorTextFocus && editorLangId == 'python'"
+  },
+
+  // Open command palette
+  {
+    "key": "cmd+shift+p",
+    "command": "workbench.action.showCommands"
+  }
+]
