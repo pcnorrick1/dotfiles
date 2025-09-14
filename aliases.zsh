@@ -25,6 +25,7 @@ alias gd="git diff"
 alias gpo="git push origin"
 alias gbr="git branch"
 alias gmt="git mergetool"
+alias glog="git log --oneline --graph --decorate --all"
 
 # ==============================
 # Conda / Python Shortcuts
@@ -36,6 +37,7 @@ alias py="python3"
 alias ipy="ipython"
 alias jn="jupyter notebook"
 alias jl="jupyter lab"
+alias mkvenv="conda create -n"
 
 # ==============================
 # Julia Shortcuts
@@ -64,3 +66,34 @@ alias edit="code ."
 alias h="history"
 alias reload="source ~/.zshrc"
 alias mkdircd='foo(){ mkdir -p "$1"; cd "$1"; }; foo'
+
+# ==============================
+# Academia Workflow Shortcuts
+# ==============================
+alias tidy="make -f ~/bin/Makefile.tidy tidy"   # daily cleanup
+alias snapshot="snapshot-academia"              # snapshot backups
+alias links="check-links ~/academia"            # check symlinks
+alias normbox="normalize-names ~/inbox"         # force inbox normalization
+
+# Paper handling
+alias addpaper="normalize-names ~/inbox && mv ~/inbox/*.pdf ~/academia/library/papers/incoming/"
+alias papers="cd ~/academia/library/papers/by-author"
+
+# Quick navigation
+alias acad="cd ~/academia"
+alias pers="cd ~/personal"
+alias notes="cd ~/academia/notes"
+alias courses="cd ~/academia/courses"
+alias projects="cd ~/academia/projects"
+alias cv="cd ~/academia/admin/cv/current"
+
+# LaTeX helpers
+alias build="make"
+alias cleantex="make clean"
+
+# Scaffolding
+alias newcourse="new-course"
+alias newproj="new-research"
+
+# Structure overview
+alias struct="print-structure"
