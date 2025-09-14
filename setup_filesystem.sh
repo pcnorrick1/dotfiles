@@ -197,12 +197,17 @@ cat > "$BIN/slink" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+  echo "usage: slink <target> [linkname]" >&2; exit 2
+fi
 target="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+if [[ ! -e "$target" ]]; then echo "target does not exist: $target" >&2; exit 1; fi
 link="${2:-$(basename "$target")}"
 link_dir="$(pwd)"
 rel="$(relpath "$target" "$link_dir" 2>/dev/null || true)"
-: "${rel:=$target}"
+: "${rel:=$target}"  # fallback absolute if python missing
 ln -sfn "$rel" "$link"
+echo "linked -> $link -> $rel"
 EOF
 chmod +x "$BIN/slink"
 
@@ -223,16 +228,26 @@ cat > "$BIN/normalize-names" <<'EOF'
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
 dir="${1:-$HOME/inbox}"
+shopt -s nullglob
 cd "$dir"
-for f in *; do
-  [ -f "$f" ] || continue
+for f in * .*; do
+  [[ "$f" == "." || "$f" == ".." ]] && continue
+  # skip directories; only files (edit as desired)
+  [[ -d "$f" ]] && continue
   base="${f%.*}"; ext="${f##*.}"
-  [[ "$f" == "$ext" ]] && ext=""
+  if [[ "$f" == "$ext" ]]; then ext=""; fi
   newbase="$(slugify "$base")"
-  newname="$newbase${ext:+.$ext}"
+  newname="$newbase"; [[ -n "$ext" ]] && newname="$newbase.$(slugify "$ext")"
+  # de-dup if collision
+  if [[ -e "$newname" && "$newname" != "$f" ]]; then
+    n=1; try="${newbase}-$n"
+    [[ -n "$ext" ]] && try="$try.$ext"
+    while [[ -e "$try" ]]; do n=$((n+1)); try="${newbase}-$n"; [[ -n "$ext" ]] && try="$try.$ext"; done
+    newname="$try"
+  fi
   if [[ "$newname" != "$f" ]]; then
     mv -n "$f" "$newname"
-    echo "$f -> $newname"
+    echo "renamed: $f -> $newname"
   fi
 done
 EOF
@@ -243,8 +258,26 @@ chmod +x "$BIN/normalize-names"
 cat > "$BIN/check-links" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+
 root="${1:-$HOME/academia}"
-find "$root" -type l ! -exec test -e {} \; -print
+
+echo "Scanning for broken symlinks under $root ..."
+echo
+
+broken=0
+while IFS= read -r -d '' link; do
+  target="$(readlink "$link")"
+  echo "❌ $link -> $target"
+  broken=$((broken+1))
+done < <(find "$root" -type l ! -exec test -e {} \; -print0)
+
+if [[ $broken -eq 0 ]]; then
+  echo "✅ No broken links found."
+else
+  echo
+  echo "Found $broken broken links."
+  echo "Tip: recreate them with 'slink <target> [linkname]'"
+fi
 EOF
 chmod +x "$BIN/check-links"
 
@@ -254,6 +287,10 @@ cat > "$BIN/dedup-pdfs" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 dir="${1:-$HOME/academia/library/papers}"
+
+echo "Scanning for duplicate PDFs in $dir ..."
+echo
+
 declare -A seen
 while IFS= read -r -d '' f; do
   sum="$(shasum "$f" | awk '{print $1}')"
@@ -272,7 +309,10 @@ cat > "$BIN/cleanup-tex" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 root="${1:-.}"
+
+echo "Cleaning LaTeX build artifacts in $root ..."
 find "$root" -type f \( -name "*.aux" -o -name "*.log" -o -name "*.out" -o -name "*.toc" -o -name "*.synctex*" -o -name "*.fls" -o -name "*.fdb_latexmk" \) -delete
+echo "✅ Done."
 EOF
 chmod +x "$BIN/cleanup-tex"
 
@@ -285,7 +325,10 @@ dir="${1:-$HOME/inbox}"
 days="${2:-30}"
 dest="$dir/archive"
 mkdir -p "$dest"
+
+echo "Archiving files older than $days days in $dir ..."
 find "$dir" -maxdepth 1 -type f -mtime +$days -exec mv {} "$dest"/ \;
+echo "✅ Archived into $dest"
 EOF
 chmod +x "$BIN/archive-old"
 
@@ -310,14 +353,47 @@ cat > "$BIN/new-course" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: new-course <term> <code> [name...]"
+  exit 1
+fi
+
 term="$(slugify "$1")"; code="$(slugify "$2")"; shift 2
 name="$(slugify "$*")"
 slug="$term-$code${name:+-$name}"
 root="$HOME/academia/courses/$slug"
+
+if [[ -d "$root" ]]; then
+  echo "Error: course $slug already exists at $root"
+  exit 1
+fi
+
 mkdir -p "$root"/{syllabus,lectures,assignments,exams,code/{python,julia},tex,notes,references}
+
 cp -n "$HOME/academia/templates/latex/notes.tex" "$root/tex/notes.tex"
 cp -n "$HOME/academia/templates/latex/Makefile" "$root/tex/Makefile"
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
+cat > "$root/README.md" <<EOF2
+# $slug
+
+## shape
+- \`syllabus/\`: syllabus and policies
+- \`lectures/\`: dated lecture notes (\`YYYY-MM-DD-lecture-##.tex\`)
+- \`assignments/\`, \`exams/\`
+- \`code/python\`, \`code/julia\`
+- \`tex/\`: main LaTeX notes (\`notes.tex\`)
+- \`notes/\`: quick markdown notes (Obsidian-friendly)
+- \`references/\`: **symlinks** to papers/textbooks
+
+## common commands
+- add a paper: \`(cd references && slink ~/academia/library/papers/by-author/romer-1990-endogenous-growth.pdf)\`
+- list symlinks: \`lslinks .\`
+EOF2
+
+echo "✓ Created new course at $root"
+echo "  - LaTeX notes scaffolded at $root/tex/notes.tex"
+
 EOF
 chmod +x "$BIN/new-course"
 
@@ -327,7 +403,9 @@ cat > "$BIN/new-research" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
+
 lang="both"; gitinit="no"; name=""
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --lang) lang="$2"; shift 2;;
@@ -335,8 +413,20 @@ while [[ $# -gt 0 ]]; do
     *) name="$name $1"; shift;;
   esac
 done
+
+if [[ -z "$name" ]]; then
+  echo "Usage: new-research [--lang python|julia|both] [--git] <project name>"
+  exit 1
+fi
+
 slug="$(slugify "$name")"
 root="$HOME/academia/projects/$slug"
+
+if [[ -d "$root" ]]; then
+  echo "Error: project $slug already exists at $root"
+  exit 1
+fi
+
 mkdir -p "$root"/{data/{raw,processed,external,interim},src,notebooks,reports,figures,results,references,docs}
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
 
@@ -357,31 +447,59 @@ fi
 
 # Julia package skeleton
 if [[ "$lang" == "julia" || "$lang" == "both" ]]; then
-pkgname="$(echo "$slug" | sed -E 's/(^|-)([a-z])/\U\2/g')"
-cat > "$root/Project.toml" <<JL
+    pkgname="$(echo "$slug" | perl -pe 's/(^|-)([a-z])/$1\u$2/g')"
+    uuid=$(uuidgen)
+
+    cat > "$root/Project.toml" <<JL
 name = "$pkgname"
-uuid = "00000000-0000-0000-0000-000000000000"
+uuid = "$uuid"
 authors = ["Patrick"]
 version = "0.1.0"
 JL
-mkdir -p "$root/src"
-cat > "$root/src/$pkgname.jl" <<JL
+
+    mkdir -p "$root/src"
+    cat > "$root/src/$pkgname.jl" <<JL
 module $pkgname
 
-greet() = println("Hello from $pkgname.jl")
+# Your code goes here
 
-end # module
+end
 JL
 fi
 
+cat > "$root/README.md" <<EOF2
+# $slug
+
+## layout
+- \`data/\`: raw (RO), processed, external, interim
+- \`src/\`: code
+- \`notebooks/\`: exploratory
+- \`reports/\`: LaTeX/markdown writeups
+- \`references/\`: **symlinks** to PDFs in \`academia/library\`
+- \`results/\`, \`figures/\`, \`docs/\`
+
+## quickstart
+- Python: \`conda env create -f environment.yml && conda activate project\`
+- Julia: in \`$slug\`, open Julia REPL: \`] activate .\` then \`] add ...\`
+
+EOF2
+
 # LaTeX reports scaffold
 mkdir -p "$root/reports"
-cp -n "$HOME/academia/templates/latex/Makefile" "$root/reports/Makefile"
+cp -n "$HOME/academia/templates/latex/notes.tex" "$root/tex/notes.tex
+
+cp -n "$HOME/academia/templates/latex/Makefile" "$root/tex/Makefile"
+cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
 
 # git init
 if [[ "$gitinit" == "yes" ]]; then
   (cd "$root" && git init -q && git add . && git commit -m "init $slug" >/dev/null)
 fi
+
+echo "✓ Created research project at $root"
+[[ "$lang" == "python" || "$lang" == "both" ]] && echo "  - Python env: $root/environment.yml"
+[[ "$lang" == "julia"  || "$lang" == "both" ]] && echo "  - Julia pkg: $root/src/$pkgname.jl"
+[[ "$gitinit" == "yes" ]] && echo "  - Git repo initialized"
 EOF
 chmod +x "$BIN/new-research"
 
