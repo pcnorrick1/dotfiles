@@ -92,16 +92,20 @@ EOF
 
 # Generic LaTeX Makefile
 cat > "$ACA/templates/latex/Makefile" <<'EOF'
-LATEX = latexmk
+LATEXMK ?= latexmk
 TEXFLAGS = -pdf -interaction=nonstopmode -file-line-error -synctex=1
 
-all: notes.pdf
+# Build all .tex in this folder (skip includes like foo-inc.tex if you adopt that pattern)
+SOURCES := $(filter-out %-inc.tex,$(wildcard *.tex))
+PDFS    := $(SOURCES:.tex=.pdf)
 
-notes.pdf: notes.tex
-	$(LATEX) $(TEXFLAGS) notes.tex
+all: $(PDFS)
+
+%.pdf: %.tex
+	$(LATEXMK) $(TEXFLAGS) $<
 
 clean:
-	$(LATEX) -C
+	$(LATEXMK) -C
 
 .PHONY: all clean
 EOF
