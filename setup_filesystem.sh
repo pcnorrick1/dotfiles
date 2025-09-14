@@ -159,6 +159,8 @@ ln -sfn "$CV/current/cv.pdf" "$CV/cv.pdf"
 # BIN HELPERS
 # --------------------------
 # _helpers.sh: slugify + relpath
+#Slugify: turns a string into a filesystem-safe consistent format
+#Relpath: computes relative path from one folder to another so symlinks don't break
 cat > "$BIN/_helpers.sh" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -182,6 +184,7 @@ EOF
 chmod +x "$BIN/_helpers.sh"
 
 # slink: safe relative symlink
+#Finds relative path and creates a symlink, replacing existing if needed
 cat > "$BIN/slink" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -196,6 +199,7 @@ EOF
 chmod +x "$BIN/slink"
 
 # lslinks
+#List all symlinks in a directory
 cat > "$BIN/lslinks" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -205,6 +209,7 @@ EOF
 chmod +x "$BIN/lslinks"
 
 # normalize-names
+#Cleans up filenames in a directory (primarily for ~/inbox/)
 cat > "$BIN/normalize-names" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -226,6 +231,7 @@ EOF
 chmod +x "$BIN/normalize-names"
 
 # check-links
+# Check for broken symlinks
 cat > "$BIN/check-links" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -235,6 +241,7 @@ EOF
 chmod +x "$BIN/check-links"
 
 # dedup-pdfs
+# Finds duplicate PDFs
 cat > "$BIN/dedup-pdfs" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -252,6 +259,7 @@ EOF
 chmod +x "$BIN/dedup-pdfs"
 
 # cleanup-tex
+# Remove auxiliary LaTeX files
 cat > "$BIN/cleanup-tex" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -261,6 +269,7 @@ EOF
 chmod +x "$BIN/cleanup-tex"
 
 # archive-old
+# Move files older than N days to archive subfolder
 cat > "$BIN/archive-old" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -273,6 +282,7 @@ EOF
 chmod +x "$BIN/archive-old"
 
 # snapshot-academia
+# Create a timestamped snapshot of academia and personal
 cat > "$BIN/snapshot-academia" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -287,6 +297,7 @@ EOF
 chmod +x "$BIN/snapshot-academia"
 
 # new-course
+# Scaffold for a new course with consistent structure
 cat > "$BIN/new-course" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -303,6 +314,7 @@ EOF
 chmod +x "$BIN/new-course"
 
 # new-research
+# Scaffold for a new research project with optional Python/Julia/LaTeX/git
 cat > "$BIN/new-research" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -366,6 +378,7 @@ EOF
 chmod +x "$BIN/new-research"
 
 # print-structure
+# Print directory tree of academia and personal
 cat > "$BIN/print-structure" <<'EOF'
 #!/usr/bin/env bash
 if command -v tree >/dev/null; then
@@ -379,6 +392,7 @@ chmod +x "$BIN/print-structure"
 
 # --------------------------
 # Launchd job for inbox normalization (WatchPaths)
+# Automatically cleans up filenames in ~/inbox when new files arrive
 # --------------------------
 PLIST="$LAUNCHD/com.user.inbox-normalize.plist"
 cat > "$PLIST" <<EOF
