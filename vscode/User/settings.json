@@ -3,7 +3,13 @@
     {
       "name": "latexmk",
       "command": "latexmk",
-      "args": ["-pdf", "-interaction=nonstopmode", "-file-line-error", "-synctex=1", "%DOC%"]
+      "args": [
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-synctex=1",
+        "%DOC%"
+      ]
     }
   ],
   "latex-workshop.latex.recipes": [
@@ -17,7 +23,6 @@
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.view.pdf.ref.viewer": "tabOrBrowser",
   "latex-workshop.view.pdf.internal.enabled": true,
-
 
   "terminal.integrated.commandsToSkipShell": ["language-julia.interrupt"],
   "julia.symbolCacheDownload": true,
@@ -38,5 +43,6 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "black",
-  "julia.numThreads": "auto"
+  "julia.numThreads": "auto",
+  "workbench.secondarySideBar.defaultVisibility": "hidden"
 }
