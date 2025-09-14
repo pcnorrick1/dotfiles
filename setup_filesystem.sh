@@ -108,12 +108,18 @@ EOF
 
 # Generic .gitignore
 cat > "$ACA/templates/.gitignore" <<'EOF'
+# OS/editor
 .DS_Store
 *.swp
+*.swo
+# Python
 __pycache__/
 *.pyc
 .venv/
+# Julia
 Manifest.toml
+# LaTeX
+*.pdf
 *.aux
 *.log
 *.out
@@ -121,7 +127,9 @@ Manifest.toml
 *.synctex*
 *.fls
 *.fdb_latexmk
+# Notebooks
 *.ipynb_checkpoints/
+# Misc
 results/
 EOF
 
