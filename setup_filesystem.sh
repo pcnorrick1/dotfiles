@@ -231,27 +231,27 @@ cat > "$BIN/normalize-names" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
+
 dir="${1:-$HOME/inbox}"
-shopt -s nullglob
-cd "$dir"
-for f in * .*; do
-  [[ "$f" == "." || "$f" == ".." ]] && continue
-  # skip directories; only files (edit as desired)
-  [[ -d "$f" ]] && continue
-  base="${f%.*}"; ext="${f##*.}"
-  if [[ "$f" == "$ext" ]]; then ext=""; fi
-  newbase="$(slugify "$base")"
-  newname="$newbase"; [[ -n "$ext" ]] && newname="$newbase.$(slugify "$ext")"
-  # de-dup if collision
-  if [[ -e "$newname" && "$newname" != "$f" ]]; then
-    n=1; try="${newbase}-$n"
-    [[ -n "$ext" ]] && try="$try.$ext"
-    while [[ -e "$try" ]]; do n=$((n+1)); try="${newbase}-$n"; [[ -n "$ext" ]] && try="$try.$ext"; done
-    newname="$try"
-  fi
-  if [[ "$newname" != "$f" ]]; then
-    mv -n "$f" "$newname"
-    echo "renamed: $f -> $newname"
+
+for f in "$dir"/*; do
+  # skip if not a regular file
+  [ -f "$f" ] || continue
+
+  base="$(basename "$f")"
+  ext="${base##*.}"
+  name="${base%.*}"
+
+  # normalize only if not already clean
+  slug="$(slugify "$name").$ext"
+  if [[ "$base" != "$slug" ]]; then
+    newpath="$dir/$slug"
+    if [ -e "$newpath" ]; then
+      echo "⚠️  Skipping $base → $slug (target exists)" >&2
+    else
+      mv "$f" "$newpath"
+      echo "Renamed $base → $slug"
+    fi
   fi
 done
 EOF
