@@ -507,6 +507,87 @@ echo "✓ Created research project at $root"
 EOF
 chmod +x "$BIN/new-research"
 
+# add-paper
+# Add a downloaded paper to the library classified by author last name
+#!/usr/bin/env bash
+set -euo pipefail
+. "$HOME/bin/_helpers.sh"
+
+usage() {
+  cat <<USAGE
+Usage:
+  add-paper [--author "Kydland, Finn; Prescott, Edward"] [--year 1982] [--title "Time to Build and Aggregate Fluctuations"] [--link <dir>] <pdf...>
+
+Notes:
+  - If flags are omitted, you'll be prompted.
+  - Files are normalized, renamed to lastname[-etal]-year-short-title.pdf,
+    moved to ~/academia/library/papers/by-author/<lastname>/,
+    and optionally symlinked into --link (defaults to cwd if it's a .../references dir).
+USAGE
+}
+
+authors="" year="" title="" link=""
+args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --author) authors="$2"; shift 2;;
+    --year)   year="$2";    shift 2;;
+    --title)  title="$2";   shift 2;;
+    --link)   link="$2";    shift 2;;
+    -h|--help) usage; exit 0;;
+    *) args+=("$1"); shift;;
+  esac
+done
+
+if [[ ${#args[@]} -eq 0 ]]; then usage; exit 1; fi
+
+# Derive default link target if CWD looks like a references dir
+if [[ -z "$link" && "$PWD" =~ /academia/(courses|projects)/.*/references$ ]]; then
+  link="$PWD"
+fi
+
+# Prompt if missing metadata
+if [[ -z "$authors" ]]; then read -r -p "Authors (e.g., 'Kydland, Finn; Prescott, Edward'): " authors; fi
+if [[ -z "$year" ]];    then read -r -p "Year (e.g., 1982): " year; fi
+if [[ -z "$title" ]];   then read -r -p "Title: " title; fi
+
+# First author's last name = text before comma in first author
+first_author_last="$(echo "$authors" | awk -F';' '{print $1}' | awk -F',' '{gsub(/^[[:space:]]+|[[:space:]]+$/,"",$1); print $1}' | tr '[:upper:]' '[:lower:]')"
+etal=""; if echo "$authors" | grep -q ';'; then etal="-etal"; fi
+
+short_title="$(slugify "$title")"
+lastname="$(slugify "$first_author_last")"
+fname="${lastname}${etal}-${year}-${short_title}.pdf"
+
+dest_dir="$HOME/academia/library/papers/by-author/$lastname"
+mkdir -p "$dest_dir"
+
+for f in "${args[@]}"; do
+  [[ -f "$f" ]] || { echo "Missing file: $f" >&2; exit 1; }
+  # normalize source name (spaces etc.) then rename into dest
+  base="$(basename "$f")"
+  norm="$(slugify "${base%.*}").${base##*.}"
+  tmp="$HOME/academia/library/papers/incoming/$norm"
+  mkdir -p "$HOME/academia/library/papers/incoming"
+  cp "$f" "$tmp"
+
+  final="$dest_dir/$fname"
+  mv -f "$tmp" "$final"
+  echo "Filed: $final"
+
+  if [[ -n "$link" ]]; then
+    mkdir -p "$link"
+    # relative symlink
+    rel="$(python3 - <<PY
+import os,sys
+print(os.path.relpath("$final","$link"))
+PY
+)"
+    ln -sfn "$rel" "$link/$fname"
+    echo "Linked into: $link/$fname"
+  fi
+done
+
 # print-structure
 # Print directory tree of academia and personal
 cat > "$BIN/print-structure" <<'EOF'
