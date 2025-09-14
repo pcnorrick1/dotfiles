@@ -1,1 +1,0 @@
-/Users/patricknorrick/academia/STRUCTURE.md
