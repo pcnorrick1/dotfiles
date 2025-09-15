@@ -39,7 +39,7 @@
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "editor.rulers": [88],
-  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
   "python.analysis.typeCheckingMode": "basic",
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "black",
