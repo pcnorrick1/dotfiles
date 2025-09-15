@@ -375,9 +375,13 @@ fi
 
 mkdir -p "$root"/{syllabus,lectures,assignments,exams,code/{python,julia},tex,notes,references}
 
+#LaTeX scaffolding
 cp -n "$HOME/academia/templates/latex/notes.tex" "$root/tex/notes.tex"
+cp -n "$HOME/academia/templates/latex/refs.bib" "$root/tex/refs.bib"
 cp -n "$HOME/academia/templates/latex/Makefile" "$root/tex/Makefile"
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
+
+#README
 cat > "$root/README.md" <<EOF2
 # $slug
 
@@ -431,10 +435,15 @@ if [[ -d "$root" ]]; then
   exit 1
 fi
 
+# --------------------------
+# Core project structure
+# --------------------------
 mkdir -p "$root"/{data/{raw,processed,external,interim},src,notebooks,reports,figures,results,references,docs}
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
 
-# Python env
+# --------------------------
+# Python environment
+# --------------------------
 if [[ "$lang" == "python" || "$lang" == "both" ]]; then
 cat > "$root/environment.yml" <<PY
 name: $slug
@@ -449,7 +458,9 @@ dependencies:
 PY
 fi
 
+# --------------------------
 # Julia package skeleton
+# --------------------------
 if [[ "$lang" == "julia" || "$lang" == "both" ]]; then
     pkgname="$(echo "$slug" | perl -pe 's/(^|-)([a-z])/$1\u$2/g')"
     uuid=$(uuidgen)
@@ -471,6 +482,9 @@ end
 JL
 fi
 
+# --------------------------
+# README
+# --------------------------
 cat > "$root/README.md" <<EOF2
 # $slug
 
@@ -483,19 +497,21 @@ cat > "$root/README.md" <<EOF2
 - \`results/\`, \`figures/\`, \`docs/\`
 
 ## quickstart
-- Python: \`conda env create -f environment.yml && conda activate project\`
-- Julia: in \`$slug\`, open Julia REPL: \`] activate .\` then \`] add ...\`
-
+- Python: \`conda env create -f environment.yml && conda activate $slug\`
+- Julia: in \`$slug\`, open Julia REPL: \`] activate .\` then \`] instantiate\`
 EOF2
 
-# LaTeX reports scaffold
+# --------------------------
+# Reports scaffold
+# --------------------------
 mkdir -p "$root/reports"
-cp -n "$HOME/academia/templates/latex/notes.tex" "$root/tex/notes.tex
+cp -n "$HOME/academia/templates/latex/report.tex" "$root/reports/report.tex"
+cp -n "$HOME/academia/templates/latex/Makefile" "$root/reports/Makefile"
+cp -n "$HOME/academia/templates/latex/refs.bib" "$root/reports/refs.bib"
 
-cp -n "$HOME/academia/templates/latex/Makefile" "$root/tex/Makefile"
-cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
-
-# git init
+# --------------------------
+# Git init
+# --------------------------
 if [[ "$gitinit" == "yes" ]]; then
   (cd "$root" && git init -q && git add . && git commit -m "init $slug" >/dev/null)
 fi
