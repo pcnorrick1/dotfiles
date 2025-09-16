@@ -314,8 +314,19 @@ cat > "$BIN/cleanup-tex" <<'EOF'
 set -euo pipefail
 root="${1:-.}"
 
-echo "Cleaning LaTeX build artifacts in $root ..."
-find "$root" -type f \( -name "*.aux" -o -name "*.log" -o -name "*.out" -o -name "*.toc" -o -name "*.synctex*" -o -name "*.fls" -o -name "*.fdb_latexmk" \) -delete
+echo "Cleaning LaTeX build artifacts under $root ..."
+
+# Walk subdirectories
+find "$root" -type d | while read -r dir; do
+  # Only clean if the directory has at least one .tex file
+  if compgen -G "$dir"/*.tex > /dev/null 2>&1; then
+    find "$dir" -maxdepth 1 -type f \( \
+      -name "*.aux" -o -name "*.log" -o -name "*.out" -o -name "*.toc" \
+      -o -name "*.synctex*" -o -name "*.fls" -o -name "*.fdb_latexmk" \
+    \) -delete
+  fi
+done
+
 echo "✅ Done."
 EOF
 chmod +x "$BIN/cleanup-tex"
