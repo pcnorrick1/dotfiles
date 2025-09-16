@@ -89,7 +89,9 @@ alias cv="cd ~/academia/admin/cv/current"
 
 # LaTeX helpers
 alias build="make"
-alias cleantex="make clean"
+alias makeclean="make clean"
+# Removes LaTeX junk but keeps PDFs
+alias cleantex="cleanup-tex"
 
 # Scaffolding
 alias newcourse="new-course"
