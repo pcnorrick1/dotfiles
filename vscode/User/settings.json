@@ -1,4 +1,10 @@
 {
+  // Font
+  "editor.fontFamily": "'Cascadia Code',Menlo, Monaco, 'Courier New', monospace",
+
+  "editor.fontLigatures": true,
+  "editor.fontSize": 14,
+
   "latex-workshop.latex.tools": [
     {
       "name": "latexmk",
@@ -34,7 +40,6 @@
   "editor.wordWrap": "on",
   "editor.formatOnSave": true,
   "julia.executablePath": "~/.juliaup/bin/julia",
-  "editor.fontSize": 14,
   "git.openRepositoryInParentFolders": "always",
   "workbench.startupEditor": "none",
   "update.showReleaseNotes": false,
@@ -48,6 +53,7 @@
   "python.formatting.provider": "black",
   "julia.numThreads": "auto",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "julia.enableCrashReporter": false,
 
   // Vim
   "vim.insertModeKeyBindings": [
@@ -56,4 +62,5 @@
       "after": ["<Esc>"]
     }
   ]
+
 }
