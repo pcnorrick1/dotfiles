@@ -47,5 +47,13 @@
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "black",
   "julia.numThreads": "auto",
-  "workbench.secondarySideBar.defaultVisibility": "hidden"
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+
+  // Vim
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "k"],
+      "after": ["<Esc>"]
+    }
+  ]
 }
