@@ -77,6 +77,7 @@ unset __conda_setup
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && \
     source /opt/homebrew/etc/profile.d/autojump.sh
 
+neofetch
 # ==============================
 # Optional Settings
 # ==============================
