@@ -578,13 +578,23 @@ if [[ -z "$authors" ]]; then read -r -p "Authors (e.g., 'Kydland, Finn; Prescott
 if [[ -z "$year" ]];    then read -r -p "Year (e.g., 1982): " year; fi
 if [[ -z "$title" ]];   then read -r -p "Title: " title; fi
 
-# First author's last name = text before comma in first author
-first_author_last="$(echo "$authors" | awk -F';' '{print $1}' | awk -F',' '{gsub(/^[[:space:]]+|[[:space:]]+$/,"",$1); print $1}' | tr '[:upper:]' '[:lower:]')"
-etal=""; if echo "$authors" | grep -q ';'; then etal="-etal"; fi
+# Split authors by semicolon
+author_list=($(echo "$authors" | tr ';' '\n'))
 
-short_title="$(slugify "$title")"
-lastname="$(slugify "$first_author_last")"
-fname="${lastname}${etal}-${year}-${short_title}.pdf"
+# Clean and slugify first author last name
+first_last="$(echo "${author_list[0]}" | awk -F',' '{gsub(/^[[:space:]]+|[[:space:]]+$/,"",$1); print $1}')"
+first_last="$(slugify "$first_last")"
+
+# Handle naming based on number of authors
+if [[ ${#author_list[@]} -eq 1 ]]; then
+  fname="${first_last}-${year}-$(slugify "$title").pdf"
+elif [[ ${#author_list[@]} -eq 2 ]]; then
+  second_last="$(echo "${author_list[1]}" | awk -F',' '{gsub(/^[[:space:]]+|[[:space:]]+$/,"",$1); print $1}')"
+  second_last="$(slugify "$second_last")"
+  fname="${first_last}-${second_last}-${year}-$(slugify "$title").pdf"
+else
+  fname="${first_last}-etal-${year}-$(slugify "$title").pdf"
+fi
 
 dest_dir="$HOME/academia/library/papers/by-author/$lastname"
 mkdir -p "$dest_dir"
