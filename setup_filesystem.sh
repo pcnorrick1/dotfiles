@@ -2,8 +2,8 @@
 # ============================================================
 # MacBook Academia/Personal Filesystem Bootstrap
 # ============================================================
-# Creates clean directory tree, installs bin helpers,
-# sets up CV/Resume scaffolding, and drop-in automation.
+# Creates clean directory tree, installs bin helpers
+#
 #
 # Run once on a new machine:
 #   bash ~/dotfiles/setup_filesystem.sh
@@ -29,7 +29,7 @@ mkdir -p "$ACA" "$PER" "$BIN" "$INBOX" "$BACKUPS" "$SCRATCH" "$LAUNCHD"
 # Academia structure
 # --------------------------
 mkdir -p "$ACA"/{courses,projects,notes,templates,admin,applications}
-mkdir -p "$ACA"/library/{papers/{incoming,by-author},textbooks,datasets/{raw,processed,external,interim}}
+mkdir -p "$ACA"/library/{papers/{incoming,by-author},textbooks}
 
 # Personal
 mkdir -p "$PER"/{projects,notes,admin,archive}
@@ -47,7 +47,7 @@ cat > "$ACA/STRUCTURE.md" <<'EOF'
 - version suffix like `-v01` before extension
 
 **Top-level**
-- ~/academia/ (courses, projects, notes, library, templates, admin, applications)
+- ~/academia/ (courses, projects, notes, library, templates, admin)
 - ~/personal/ (projects, notes, admin, archive)
 - ~/inbox/ (default browser downloads)
 - ~/bin/ (scripts)
@@ -62,12 +62,11 @@ cat > "$ACA/STRUCTURE.md" <<'EOF'
 
 **Course scaffold**
 - `new-course 2026-fall econ-701 macro-i`
-- Creates syllabus/, lectures/, assignments/, exams/, code/, tex/, notes/, references/.
+- Creates syllabus/, lectures/, assignments/, exams/, tex/, notes/, references/.
 
 **Research scaffold**
-- `new-research heterogeneous-agents --lang both --git`
-- Creates data/, notebooks/, src/, reports/, references/, results/, figures/, docs/.
-- Adds Python `environment.yml` and/or Julia `Project.toml` + package skeleton.
+- `new-research heterogeneous-agents`
+- Creates data/, src/, reports/, references/, results/, figures/.
 
 EOF
 
@@ -75,40 +74,55 @@ EOF
 # Templates
 # --------------------------
 mkdir -p "$ACA/templates/latex"
-cat > "$ACA/templates/latex/notes.tex" <<'EOF'
+cat > "$ACA/templates/latex/article.tex" <<'EOF'
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{hyperref}
-\title{Course Notes}
-\author{Patrick}
+\title{Article Title}
+\author{Patrick Norrick}
 \date{\today}
+
 \begin{document}
 \maketitle
-\section*{Session Title}
-% your notes
+
+\section{Introduction}
+Text.
+Example citation \cite{example}.
+
+\bibliographystyle{plain}
+\bibliography{refs}
 \end{document}
 EOF
 
-# Generic LaTeX Makefile
-cat > "$ACA/templates/latex/Makefile" <<'EOF'
-LATEXMK ?= latexmk
-TEXFLAGS = -pdf -interaction=nonstopmode -file-line-error -synctex=1
-
-# Build all .tex in this folder (skip includes like foo-inc.tex if you adopt that pattern)
-SOURCES := $(filter-out %-inc.tex,$(wildcard *.tex))
-PDFS    := $(SOURCES:.tex=.pdf)
-
-all: $(PDFS)
-
-%.pdf: %.tex
-	$(LATEXMK) $(TEXFLAGS) $<
-
-clean:
-	$(LATEXMK) -C
-
-.PHONY: all clean
+# Generic ref.bib template
+cat > "$ACA/templates/latex/refs.bib" <<'EOF'
+@article{example,
+  author  = {Doe, John and Smith, Jane},
+  title   = {An Example Paper},
+  journal = {Journal of Examples},
+  year    = {2024},
+  volume  = {1},
+  number  = {1},
+  pages   = {1--10}
+}
 EOF
+
+# Beamer template
+cat > "$ACA/templates/latex/beamer.tex" <<'EOF'
+\documentclass{beamer}
+\usetheme{default}
+\title{Talk Title}
+\author{Patrick Norrick}
+\date{\today}
+\begin{document}
+\frame{\titlepage}
+\begin{frame}{Slide}
+Content.
+\end{frame}
+\end{document}
+EOF
+
 
 # Generic .gitignore
 cat > "$ACA/templates/.gitignore" <<'EOF'
@@ -136,36 +150,6 @@ Manifest.toml
 # Misc
 results/
 EOF
-
-# --------------------------
-# CV scaffolding
-# --------------------------
-CV="$ACA/admin/cv"
-mkdir -p "$CV"/{current,archive,templates}
-
-cat > "$CV/current/cv.tex" <<'EOF'
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\begin{document}
-\section*{Curriculum Vitae}
-Patrick
-\end{document}
-EOF
-
-cat > "$CV/current/Makefile" <<'EOF'
-LATEX = latexmk
-TEXFLAGS = -pdf -interaction=nonstopmode -file-line-error -synctex=1
-
-all: cv.pdf
-cv.pdf: cv.tex
-	$(LATEX) $(TEXFLAGS) cv.tex
-
-clean:
-	$(LATEX) -C
-.PHONY: all clean
-EOF
-
-ln -sfn "$CV/current/cv.pdf" "$CV/cv.pdf"
 
 # --------------------------
 # BIN HELPERS
@@ -247,7 +231,7 @@ for f in "$dir"/*; do
   if [[ "$base" != "$slug" ]]; then
     newpath="$dir/$slug"
     if [ -e "$newpath" ]; then
-      echo "⚠️  Skipping $base → $slug (target exists)" >&2
+      echo "Skipping $base → $slug (target exists)" >&2
     else
       mv "$f" "$newpath"
       echo "Renamed $base → $slug"
@@ -384,12 +368,11 @@ if [[ -d "$root" ]]; then
   exit 1
 fi
 
-mkdir -p "$root"/{syllabus,lectures,assignments,exams,code/{python,julia},tex,notes,references}
+mkdir -p "$root"/{syllabus,lectures,assignments,exams,tex,notes,references}
 
 #LaTeX scaffolding
-cp -n "$HOME/academia/templates/latex/notes.tex" "$root/tex/notes.tex"
+cp -n "$HOME/academia/templates/latex/article.tex" "$root/tex/notes.tex"
 cp -n "$HOME/academia/templates/latex/refs.bib" "$root/tex/refs.bib"
-cp -n "$HOME/academia/templates/latex/Makefile" "$root/tex/Makefile"
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
 
 #README
@@ -400,7 +383,6 @@ cat > "$root/README.md" <<EOF2
 - \`syllabus/\`: syllabus and policies
 - \`lectures/\`: dated lecture notes (\`YYYY-MM-DD-lecture-##.tex\`)
 - \`assignments/\`, \`exams/\`
-- \`code/python\`, \`code/julia\`
 - \`tex/\`: main LaTeX notes (\`notes.tex\`)
 - \`notes/\`: quick markdown notes (Obsidian-friendly)
 - \`references/\`: **symlinks** to papers/textbooks
@@ -423,15 +405,6 @@ cat > "$BIN/new-research" <<'EOF'
 set -euo pipefail
 . "$HOME/bin/_helpers.sh"
 
-lang="both"; gitinit="no"; name=""
-
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --lang) lang="$2"; shift 2;;
-    --git) gitinit="yes"; shift;;
-    *) name="$name $1"; shift;;
-  esac
-done
 
 if [[ -z "$name" ]]; then
   echo "Usage: new-research [--lang python|julia|both] [--git] <project name>"
@@ -449,49 +422,9 @@ fi
 # --------------------------
 # Core project structure
 # --------------------------
-mkdir -p "$root"/{data/{raw,processed,external,interim},src,notebooks,reports,figures,results,references,docs}
+mkdir -p "$root"/{data/{raw,processed,external,interim},src,reports,figures,results,references}
 cp -n "$HOME/academia/templates/.gitignore" "$root/.gitignore"
 
-# --------------------------
-# Python environment
-# --------------------------
-if [[ "$lang" == "python" || "$lang" == "both" ]]; then
-cat > "$root/environment.yml" <<PY
-name: $slug
-channels:
-  - conda-forge
-dependencies:
-  - python>=3.11
-  - numpy
-  - pandas
-  - matplotlib
-  - jupyter
-PY
-fi
-
-# --------------------------
-# Julia package skeleton
-# --------------------------
-if [[ "$lang" == "julia" || "$lang" == "both" ]]; then
-    pkgname="$(echo "$slug" | perl -pe 's/(^|-)([a-z])/$1\u$2/g')"
-    uuid=$(uuidgen)
-
-    cat > "$root/Project.toml" <<JL
-name = "$pkgname"
-uuid = "$uuid"
-authors = ["Patrick"]
-version = "0.1.0"
-JL
-
-    mkdir -p "$root/src"
-    cat > "$root/src/$pkgname.jl" <<JL
-module $pkgname
-
-# Your code goes here
-
-end
-JL
-fi
 
 # --------------------------
 # README
@@ -502,35 +435,21 @@ cat > "$root/README.md" <<EOF2
 ## layout
 - \`data/\`: raw (RO), processed, external, interim
 - \`src/\`: code
-- \`notebooks/\`: exploratory
 - \`reports/\`: LaTeX/markdown writeups
 - \`references/\`: **symlinks** to PDFs in \`academia/library\`
-- \`results/\`, \`figures/\`, \`docs/\`
+- \`results/\`, \`figures/\`
 
-## quickstart
-- Python: \`conda env create -f environment.yml && conda activate $slug\`
-- Julia: in \`$slug\`, open Julia REPL: \`] activate .\` then \`] instantiate\`
 EOF2
 
 # --------------------------
 # Reports scaffold
 # --------------------------
 mkdir -p "$root/reports"
-cp -n "$HOME/academia/templates/latex/report.tex" "$root/reports/report.tex"
-cp -n "$HOME/academia/templates/latex/Makefile" "$root/reports/Makefile"
+cp -n "$HOME/academia/templates/latex/article.tex" "$root/reports/writeup.tex"
 cp -n "$HOME/academia/templates/latex/refs.bib" "$root/reports/refs.bib"
 
-# --------------------------
-# Git init
-# --------------------------
-if [[ "$gitinit" == "yes" ]]; then
-  (cd "$root" && git init -q && git add . && git commit -m "init $slug" >/dev/null)
-fi
 
 echo "✓ Created research project at $root"
-[[ "$lang" == "python" || "$lang" == "both" ]] && echo "  - Python env: $root/environment.yml"
-[[ "$lang" == "julia"  || "$lang" == "both" ]] && echo "  - Julia pkg: $root/src/$pkgname.jl"
-[[ "$gitinit" == "yes" ]] && echo "  - Git repo initialized"
 EOF
 chmod +x "$BIN/new-research"
 
