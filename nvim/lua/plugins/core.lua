@@ -56,23 +56,30 @@ return {
         { name = "academia", path = "~/academia/notes" },
       },
       notes_subdir = "inbox",           -- new notes land in ~/academia/notes/inbox
-      daily_notes = { folder = "contexts/dailies" },
+      new__notes_location = "notes_subdir",
       templates = {
-        folder = ".templates",
+        folder = "templates",
         date_format = "%Y-%m-%d",
         time_format = "%H:%M",
       },
       attachments = { img_folder = "attachments/img" },
       ui = { enable = true },
     },
-    keys = {
-      { "<leader>on", "<cmd>ObsidianNew<cr>",           desc = "Obsidian: new note" },
-      { "<leader>oo", "<cmd>ObsidianQuickSwitch<cr>",   desc = "Obsidian: quick switch" },
-      { "<leader>os", "<cmd>ObsidianSearch<cr>",        desc = "Obsidian: search notes" },
-      { "<leader>ot", "<cmd>ObsidianToday<cr>",         desc = "Obsidian: today" },
-      { "<leader>oT", "<cmd>ObsidianTemplate<cr>",      desc = "Obsidian: insert template" },
-      { "<leader>oc", "<cmd>ObsidianToggleCheckbox<cr>",desc = "Obsidian: toggle checkbox" },
-      { "gf",         "<cmd>ObsidianFollowLink<cr>",    desc = "Obsidian: follow link" },
+      mappings = {
+      -- overrides the 'gf' mapping to work on markdown/wiki links within your vault
+      ["gf"] = {
+        action = function()
+          return require("obsidian").util.gf_passthrough()
+        end,
+        opts = { noremap = false, expr = true, buffer = true },
+      },
+      -- toggle check-boxes
+      ["<leader>ti"] = {
+        action = function()
+          return require("obsidian").util.toggle_checkbox()
+        end,
+        opts = { buffer = true },
+      },
     },
   },
 }
