@@ -101,3 +101,8 @@ alias newproj="new-research"
 
 # Structure overview
 alias struct="print-structure"
+
+# ==============================
+# Obsidian
+# ==============================
+alias oo="cd ~/academia/notes"
