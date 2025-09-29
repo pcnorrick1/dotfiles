@@ -65,7 +65,7 @@ return {
       attachments = { img_folder = "attachments/img" },
       ui = { enable = true },
     },
-      mappings = {
+    mappings = {
       -- overrides the 'gf' mapping to work on markdown/wiki links within your vault
       ["gf"] = {
         action = function()
@@ -80,6 +80,6 @@ return {
         end,
         opts = { buffer = true },
       },
-    },
+    }  ,
   },
 }
