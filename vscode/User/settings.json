@@ -24,8 +24,8 @@
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "latexmk 🔄 (biber)",
-      "tools": ["latexmk (biber)"]
+      "name": "latexmk 🔄",
+      "tools": ["latexmk"]
     }
   ],
 
