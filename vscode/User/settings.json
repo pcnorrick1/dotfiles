@@ -11,7 +11,7 @@
 
   "latex-workshop.latex.tools": [
     {
-      "name": "latexmk (biber)",
+      "name": "latexmk",
       "command": "latexmk",
       "args": [
         "-pdf",
