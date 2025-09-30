@@ -29,6 +29,9 @@
     }
   ],
 
+  // Let LaTeX Workshop find master.bib globally
+  "latex-workshop.latex.bibDirs": ["/Users/patricknorrick/academia/library"],
+
   // VS Code PDF Viewer
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.view.pdf.ref.viewer": "tabOrBrowser",
