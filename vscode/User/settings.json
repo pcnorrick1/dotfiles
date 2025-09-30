@@ -11,21 +11,22 @@
 
   "latex-workshop.latex.tools": [
     {
-      "name": "latexmk",
+      "name": "latexmk (biber)",
       "command": "latexmk",
       "args": [
         "-pdf",
         "-interaction=nonstopmode",
         "-file-line-error",
         "-synctex=1",
+        "-use-biber",
         "%DOC%"
       ]
     }
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "latexmk 🔄",
-      "tools": ["latexmk"]
+      "name": "latexmk 🔄 (biber)",
+      "tools": ["latexmk (biber)"]
     }
   ],
 
