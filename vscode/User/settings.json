@@ -18,7 +18,6 @@
         "-interaction=nonstopmode",
         "-file-line-error",
         "-synctex=1",
-        "-use-biber",
         "%DOC%"
       ]
     }
