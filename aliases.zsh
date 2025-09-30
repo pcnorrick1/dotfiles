@@ -90,7 +90,7 @@ alias cv="cd ~/academia/admin/cv/current"
 # LaTeX helpers
 alias build="make"
 alias makeclean="make clean"
-alias cptex='cp ~/academia/templates/latex/notes.tex ~/academia/templates/latex/refs.bib .' #Copy LaTeX and BibTeX templates to current directory
+alias cptex='cp ~/academia/templates/latex/article.tex article.tex && slink ~/academia/library/master.bib refs.bib' #Copy LaTeX article template and create link to master.bib under refs.bib
 
 # Removes LaTeX junk but keeps PDFs
 alias cleantex="cleanup-tex"
