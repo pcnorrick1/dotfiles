@@ -1,2 +1,5 @@
--- Kick off lazy.nvim, which manages all other plugins, from a separate file
-require("config.lazy")
+require("keymaps")
+require("options")
+require("plugins.lazy")
+require("plugins.keymaps")
+require("plugins.options")
