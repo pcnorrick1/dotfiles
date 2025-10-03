@@ -1,0 +1,10 @@
+# Shell
+shell = "/bin/zsh --login"
+
+# Font
+font-family = "CascadiaCode Nerd Font"
+font-size   = 16
+
+# Cursor
+cursor-style = beam
+confirm-close-surface = false
