@@ -2,5 +2,7 @@
 font-family = Cascadia Code NF Regular Regular
 font-size   = 16
 
+theme = Dracula+
+
 # Make window remember location/size
 window-save-state = always
