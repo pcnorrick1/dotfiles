@@ -3,6 +3,9 @@
 # ==============================
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
+#Prefer Homebrew's bin over system bin
+export PATH="/opt/homebrew/bin:$PATH"
+
 # Homebrew GNU make
 HOMEBREW_GNU_MAKE="$(brew --prefix)/opt/make/libexec/gnubin"
 [[ -d "$HOMEBREW_GNU_MAKE" ]] && export PATH="$HOMEBREW_GNU_MAKE:$PATH"
@@ -21,8 +24,8 @@ esac
 # ==============================
 # Starship prompt (same look as zsh)
 # ==============================
-# export STARSHIP_CONFIG="$HOME/dotfiles/starship/starship.toml"
-# eval "$(starship init bash)"
+export STARSHIP_CONFIG="$HOME/dotfiles/starship/starship.toml"
+eval "$(starship init bash)"
 
 
 # ==============================
