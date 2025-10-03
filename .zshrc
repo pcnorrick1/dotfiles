@@ -59,7 +59,7 @@ unset __conda_setup
 # Aliases
 # ==============================
 # Load custom aliases from $ZSH_CUSTOM
-[ -f "$ZSH_CUSTOM/aliases.zsh" ] && source "$ZSH_CUSTOM/aliases.zsh"
+[ -f ~/dotfiles/aliases.sh ] && source ~/dotfiles/aliases.sh
 
 
 # ==============================
