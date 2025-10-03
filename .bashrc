@@ -34,7 +34,7 @@ else
     export PATH="/opt/anaconda3/bin:$PATH"
 fi
 # To keep base off by default:
-conda config --set auto_activate_base false
+conda config --set auto_activate false
 
 # ==============================
 # Completions / Tools
