@@ -34,7 +34,13 @@ JULIAUP_BIN="$HOME/.juliaup/bin"
 # TeX binaries
 [ -d "/Library/TeX/texbin" ] && export PATH="/Library/TeX/texbin:$PATH"
 
-# Conda will append itself below
+# ==============================
+# LLVM (C/C++ Compiler)
+# ==============================
+# Ensure LLVM headers/libs available if you need them:
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 # ==============================
 # Starship prompt

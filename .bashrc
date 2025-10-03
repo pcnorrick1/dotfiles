@@ -14,6 +14,14 @@ HOMEBREW_GNU_MAKE="$(brew --prefix)/opt/make/libexec/gnubin"
 [[ -d "/Library/TeX/texbin" ]] && export PATH="/Library/TeX/texbin:$PATH"
 
 # ==============================
+# LLVM (C/C++ Compiler)
+# ==============================
+# Ensure LLVM headers/libs available if you need them:
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
+# ==============================
 # Juliaup (was auto-inserted by juliaup)
 # ==============================
 case ":$PATH:" in
