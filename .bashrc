@@ -52,7 +52,20 @@ conda config --set auto_activate false
 
 # Use GNU ls with colors
 alias ls="gls --color=auto"
-export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+export LS_COLORS="\
+di=36;1:\
+ln=35;1:\
+so=32;1:\
+pi=33;1:\
+ex=32;1:\
+bd=34;46:\
+cd=34;43:\
+su=37;41:\
+sg=30;43:\
+tw=30;42:\
+ow=34;42:\
+*.tar=31:*.tgz=31:*.arj=31:*.taz=31:*.lzh=31:*.zip=31:*.z=31:*.Z=31:*.gz=31:*.bz2=31:*.xz=31:*.rar=31:*.7z=31:\
+*.jpg=35:*.jpeg=35:*.gif=35:*.bmp=35:*.png=35:*.svg=35:*.pdf=35"
 
 
 # ==============================
