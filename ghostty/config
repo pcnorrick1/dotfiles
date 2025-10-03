@@ -4,3 +4,6 @@ font-size   = 16
 
 # Cursor
 cursor-style = bar
+
+# Theme
+theme = Dracula+
