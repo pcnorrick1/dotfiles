@@ -1,0 +1,14 @@
+# Disable the clock in the prompt
+[time]
+disabled = true
+
+# Keep directory and git info visible (these are defaults, but explicit is better)
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+symbol = "🌱 "
+
+[git_status]
+disabled = false
