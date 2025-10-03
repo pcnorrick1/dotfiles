@@ -21,8 +21,8 @@ esac
 # ==============================
 # Starship prompt (same look as zsh)
 # ==============================
-export STARSHIP_CONFIG="$HOME/dotfiles/starship/starship.toml"
-eval "$(starship init bash)"
+# export STARSHIP_CONFIG="$HOME/dotfiles/starship/starship.toml"
+# eval "$(starship init bash)"
 
 
 # ==============================
