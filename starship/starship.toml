@@ -7,8 +7,5 @@ disabled = true
 truncation_length = 3
 truncate_to_repo = false
 
-[git_branch]
-symbol = "🌱 "
-
 [git_status]
 disabled = false
