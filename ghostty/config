@@ -1,9 +1,6 @@
 # Font
-font-family = "CascadiaCode Nerd Font"
+font-family = Cascadia Code NF Regular Regular
 font-size   = 16
 
-# Cursor
-cursor-style = bar
-
-# Theme
-theme = Dracula+
+# Make window remember location/size
+window-save-state = always
