@@ -9,3 +9,6 @@ truncate_to_repo = false
 
 [git_status]
 disabled = false
+
+[conda]
+format = '[$symbol$environment](dimmed green) '
