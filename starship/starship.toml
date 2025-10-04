@@ -12,3 +12,5 @@ disabled = false
 
 [conda]
 format = '[$symbol$environment](dimmed green) '
+ignore_base = true           # hide when 'base' is active
+disabled = false
