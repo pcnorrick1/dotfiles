@@ -40,6 +40,7 @@ JULIAUP_BIN="$HOME/.juliaup/bin"
 # pipx shims
 export PATH="$HOME/.local/bin:$PATH"
 
+
 # ==============================
 # Starship prompt
 # ==============================

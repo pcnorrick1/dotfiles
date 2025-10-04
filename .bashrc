@@ -19,6 +19,11 @@ esac
 # pipx shims (global dev tools)
 export PATH="$HOME/.local/bin:$PATH"
 
+# ==============================
+# Set Neovim as default editor
+# ==============================
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 # ==============================
 # Starship prompt
