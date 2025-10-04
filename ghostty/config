@@ -2,7 +2,7 @@
 font-family = "CaskaydiaCove Nerd Font"
 font-size   = 16
 font-style = regular
-
+font-feature = liga off, calt off
 
 theme = Dracula+
 

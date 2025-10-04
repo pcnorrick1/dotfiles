@@ -2,10 +2,16 @@
   // Font
   "editor.fontFamily": "'CaskaydiaCove Nerd Font',Menlo, Monaco, 'Courier New', monospace",
 
-  "editor.fontLigatures": true,
   "editor.fontSize": 16,
+  "editor.fontLigatures": false,
+  "terminal.integrated.fontLigatures": false,
   "terminal.integrated.fontFamily": "CaskaydiaCove Nerd Font",
   "terminal.integrated.fontSize": 16,
+
+
+  // turn off window restoration
+  "window.restoreWindows": "none",
+  "window.restoreFullscreen": false,
 
   "latex-workshop.latex.tools": [
     {
@@ -60,12 +66,10 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "julia.enableCrashReporter": false,
 
-  // Vim
-  "vim.insertModeKeyBindings": [
-    {
-      "before": ["j", "k"],
-      "after": ["<Esc>"]
-    }
-  ]
-
+  // Consistency with Bash and Neovim
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.confirmOnExit": "never",
+  "editor.minimap.enabled": false  // optional: cleaner look
 }
