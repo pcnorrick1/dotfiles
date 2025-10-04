@@ -1,51 +1,41 @@
 # ==============================
-# PATH
+# PATH order
 # ==============================
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH" #Prefer homebrew to system path
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH" #MacTeX binaries
 
-#Prefer Homebrew's bin over system bin
-export PATH="/opt/homebrew/bin:$PATH"
-
-# Homebrew GNU make
+# GNU make (from Homebrew)
 HOMEBREW_GNU_MAKE="$(brew --prefix)/opt/make/libexec/gnubin"
 [[ -d "$HOMEBREW_GNU_MAKE" ]] && export PATH="$HOMEBREW_GNU_MAKE:$PATH"
 
-# TeX
-[[ -d "/Library/TeX/texbin" ]] && export PATH="/Library/TeX/texbin:$PATH"
-
-# ==============================
-# LLVM (C/C++ Compiler)
-# ==============================
-# Ensure LLVM headers/libs available if you need them:
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-
-# ==============================
-# Juliaup (was auto-inserted by juliaup)
-# ==============================
+# Juliaup (auto-added)
 case ":$PATH:" in
     *:"$HOME/.juliaup/bin":*) ;;
     *) export PATH="$HOME/.juliaup/bin${PATH:+:${PATH}}" ;;
 esac
 
+# pipx shims (global dev tools)
+export PATH="$HOME/.local/bin:$PATH"
+
+
 # ==============================
-# Starship prompt (same look as zsh)
+# Starship prompt
 # ==============================
 export STARSHIP_CONFIG="$HOME/dotfiles/starship/starship.toml"
 eval "$(starship init bash)"
 
 
 # ==============================
-# Conda (migrated from conda init)
+# Conda
 # ==============================
 if [[ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]]; then
     . "/opt/anaconda3/etc/profile.d/conda.sh"
-else
-    export PATH="/opt/anaconda3/bin:$PATH"
 fi
-# To keep base off by default:
-conda config --set auto_activate false
+# Keep base off by default
+conda config --set auto_activate_base false
+
 
 # ==============================
 # Completions / Tools
@@ -61,7 +51,30 @@ conda config --set auto_activate false
 [[ -r /opt/homebrew/etc/profile.d/autojump.sh ]] && \
   . /opt/homebrew/etc/profile.d/autojump.sh
 
-# Use GNU ls with colors
+# ==============================
+# LLVM (C/C++ Compiler)
+# ==============================
+# Ensure LLVM headers/libs available if you need them:
+
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
+
+# ==============================
+# Aliases & functions
+# ==============================
+[[ -f "$HOME/dotfiles/aliases.sh" ]] && . "$HOME/dotfiles/aliases.sh"
+
+
+# ==============================
+# Neofetch banner (interactive shells only)
+# ==============================
+case $- in
+  *i*) command -v neofetch >/dev/null && neofetch ;;
+esac
+
+
+# Color files/dirs when listing
 alias ls="gls --color=auto"
 export LS_COLORS="\
 di=36;1:\
@@ -79,14 +92,4 @@ ow=34;42:\
 *.jpg=35:*.jpeg=35:*.gif=35:*.bmp=35:*.png=35:*.svg=35:*.pdf=35"
 
 
-# ==============================
-# Aliases & functions
-# ==============================
-[[ -f "$HOME/dotfiles/aliases.sh" ]] && . "$HOME/dotfiles/aliases.sh"
 
-# ==============================
-# Neofetch banner (interactive shells only)
-# ==============================
-case $- in
-  *i*) command -v neofetch >/dev/null && neofetch ;;
-esac
