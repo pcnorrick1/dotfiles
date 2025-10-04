@@ -9,6 +9,9 @@ truncate_to_repo = false
 
 [git_status]
 disabled = false
+# Use a direct porcelain query instead of upstream:track
+detect_untracked_files = true
+show_sync_count = true
 
 [conda]
 format = '[$symbol$environment](dimmed green) '
