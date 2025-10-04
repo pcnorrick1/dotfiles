@@ -59,7 +59,7 @@ else
         . "/opt/anaconda3/etc/profile.d/conda.sh"
 fi
 unset __conda_setup
-conda config --set auto_activate_base false
+conda config --set auto_activate false
 
 
 # ==============================

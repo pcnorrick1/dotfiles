@@ -39,7 +39,7 @@ if [[ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]]; then
     . "/opt/anaconda3/etc/profile.d/conda.sh"
 fi
 # Keep base off by default
-conda config --set auto_activate_base false
+conda config --set auto_activate false
 
 
 # ==============================
