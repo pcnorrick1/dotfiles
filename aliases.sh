@@ -5,6 +5,11 @@ alias ll="ls -lah"
 alias la="ls -A"
 alias l="ls -CF"
 
+alias grep="grep --color=auto"
+alias dfh="df -h"
+alias duh="du -h -d 1"
+alias c="clear"
+
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -71,6 +76,7 @@ alias brewup="brew upgrade"
 # Misc Productivity
 # ==============================
 alias edit="code ."
+alias vcode="code -r ."   # open in same window
 alias h="history"
 
 # mkdir + cd as a function (portable)
@@ -111,3 +117,29 @@ alias struct="print-structure"
 # Obsidian
 # ==============================
 alias oo="cd ~/academia/notes"
+
+# ==============================
+# Tmux Shortcuts
+# ==============================
+alias ta="tmux attach -t"
+alias tn="tmux new -s"
+alias tls="tmux ls"
+alias tkill="tmux kill-session -t"
+alias tnew="tmux new-session -A -s main"  # create or attach to a 'main' session
+
+# ==============================
+# Neovim Shortcuts
+# ==============================
+alias v="nvim"
+alias ve="nvim ."
+alias vb="nvim ~/.bashrc"
+alias vz="nvim ~/.zshrc"
+alias vd="nvim ~/dotfiles"
+
+# ==============================
+# tmux + Neovim project launcher
+# ==============================
+proj() {
+  cd ~/academia/projects/"$1" 2>/dev/null || { echo "No such project"; return 1; }
+  tmux new-session -A -s "$1" "nvim"
+}
