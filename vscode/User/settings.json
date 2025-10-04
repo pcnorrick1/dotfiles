@@ -71,5 +71,6 @@
   "terminal.integrated.inheritEnv": true,
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.confirmOnExit": "never",
-  "editor.minimap.enabled": false  // optional: cleaner look
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "relative"
 }
