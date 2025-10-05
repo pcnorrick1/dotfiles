@@ -34,6 +34,23 @@ cmp.setup.filetype("tex", {
     })
 })
 
+-- Markdown: cite keys from your local + global bibs
+cmp.setup.filetype("markdown", {
+  sources = cmp.config.sources({
+    {
+      name = "bibtex",
+      option = {
+        bibliography = {
+          "refs.bib",  -- project-local (or symlink)
+          os.getenv("HOME") .. "/academia/library/master.bib", -- optional global
+        },
+      },
+    },
+    { name = "path" },
+  }, { { name = "buffer" } }),
+})
+
+
 -- Capabilities for all LSP servers
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
