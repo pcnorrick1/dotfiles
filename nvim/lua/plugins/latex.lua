@@ -1,8 +1,6 @@
--- Viewer: prefer Zathura; if not installed, fallback to Sioyek
-local viewer = vim.fn.executable("zathura") == 1 and "zathura" or "sioyek"
-
-vim.g.vimtex_view_method = viewer
+vim.g.vimtex_view_method = "sioyek" 
 vim.g.vimtex_compiler_method = "latexmk"
+vim.g.vimtex_compiler_progname = "nvr"
 vim.g.vimtex_quickfix_mode = 0  -- cleaner quickfix
 vim.g.vimtex_mappings_enabled = 1
 
