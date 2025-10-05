@@ -99,9 +99,6 @@ require('lazy').setup({
   -- Cite-keys for vimtex
   { "micangl/cmp-vimtex" },
 
-  -- Cite-keys for markdown
-  { "kdheepak/cmp-bibtex" },
-
   -- Autosave
   {
     "Pocco81/auto-save.nvim",
