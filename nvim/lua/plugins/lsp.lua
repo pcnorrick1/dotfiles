@@ -25,7 +25,7 @@ cmp.setup({
 })
 
 cmp.setup.filetype("tex", {
-    wources = cmp.config.sources({
+    sources = cmp.config.sources({
         { name = "vimtex" },
         { name = "ultisnips" },
         { name = "path" },

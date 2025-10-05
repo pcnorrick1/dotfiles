@@ -3,6 +3,7 @@ vim.g.vimtex_compiler_method = "latexmk"
 vim.g.vimtex_compiler_progname = "nvr"
 vim.g.vimtex_quickfix_mode = 0  -- cleaner quickfix
 vim.g.vimtex_mappings_enabled = 1
+vim.g.vimtex_syntax_enabled = 0 -- gives syntax highlighting to treesitter
 
 -- UltiSnips settings (for LaTeX snippets)
 vim.g.UltiSnipsExpandTrigger = "<C-j>"
