@@ -100,7 +100,7 @@ require('lazy').setup({
   { "micangl/cmp-vimtex" },
 
   -- Cite-keys for markdown
-  { "kdheepak/cmp-bibtex" }
+  { "kdheepak/cmp-bibtex" },
 
   -- Autosave
   {
