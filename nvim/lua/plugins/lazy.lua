@@ -96,6 +96,9 @@ require('lazy').setup({
   -- Send code to a REPL in another tmux pane
   { "jpalardy/vim-slime" },
 
+  -- Cite-keys for vimtex
+  { "micangl/cmp-vimtex" },
+
   -- Autosave
   {
     "Pocco81/auto-save.nvim",

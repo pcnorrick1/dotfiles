@@ -24,6 +24,16 @@ cmp.setup({
   }),
 })
 
+cmp.setup.filetype("tex", {
+    wources = cmp.config.sources({
+        { name = "vimtex" },
+        { name = "ultisnips" },
+        { name = "path" },
+    }, {
+        { name = "buffer" },
+    })
+})
+
 -- Capabilities for all LSP servers
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
