@@ -11,7 +11,7 @@ vim.keymap.set("n", "<leader>e", ":NvimTreeFindFileToggle<cr>")
 vim.keymap.set({"n", "v"}, "<leader>/", ":CommentToggle<cr>")
 
 -- Markdown preview (glow)
-vim.keymap.set("n","<leader>mp", ":Glow<CR>")
+vim.keymap.set("n","<leader>mpg", ":Glow<CR>")
 
 -- Markdown preview (browser)
-vim.keymap.set("n", "<leader>mpb", ":MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown Preview" })
+vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>")
