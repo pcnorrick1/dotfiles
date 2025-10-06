@@ -56,6 +56,19 @@ require('lazy').setup({
   -- Markdown preview (terminal glow)
   { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
 
+  -- Markdown preview (opens in browser)
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && yarn install",
+    ft = { "markdown" },
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_browser = "/Applications/Firefox.app/Contents/MacOS/firefox"
+    end,
+  },
+
+
   -- LaTeX
   { "lervag/vimtex" },
 
