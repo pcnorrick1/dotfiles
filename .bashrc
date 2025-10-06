@@ -19,6 +19,9 @@ esac
 # pipx shims (global dev tools)
 export PATH="$HOME/.local/bin:$PATH"
 
+# node for markdown preview
+export NODE_OPTIONS=--openssl-legacy-provider
+
 # ==============================
 # Set Neovim as default editor
 # ==============================
