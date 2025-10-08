@@ -6,7 +6,7 @@ export PATH="/opt/homebrew/bin:$PATH" #Prefer homebrew to system path
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 #TeX binaries
-[ -d "/Library/TeX/texbin" ] && export PATH = "/Library/TeX/texbin:$PATH"
+[ -d "/Library/TeX/texbin" ] && export PATH="/Library/TeX/texbin:$PATH"
 
 # GNU make (from Homebrew)
 HOMEBREW_GNU_MAKE="$(brew --prefix)/opt/make/libexec/gnubin"
