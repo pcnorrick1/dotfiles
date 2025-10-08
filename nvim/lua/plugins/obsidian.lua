@@ -55,5 +55,5 @@ require("obsidian").setup({
   },
   ui = {
     enable = false, -- disable visual hiding of markdown syntax
-  ,
+  },
 })
