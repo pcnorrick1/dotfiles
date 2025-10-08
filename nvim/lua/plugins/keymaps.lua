@@ -18,3 +18,6 @@ vim.keymap.set("n","<leader>mpg", ":Glow<CR>")
 
 -- Markdown preview (browser)
 vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>")
+
+-- Rename Variables
+vim.keymap.set("n", "<leader>rn", ":IncRename<CR>")

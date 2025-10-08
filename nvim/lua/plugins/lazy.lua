@@ -129,4 +129,7 @@ require('lazy').setup({
     config = function() require("auto-save").setup{} end
   },
 
+  -- Rename variables
+  { "smjonas/inc-rename.nvim", opts= {} },
+
 })
