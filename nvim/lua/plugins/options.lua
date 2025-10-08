@@ -13,4 +13,3 @@ vim.g.slime_target = "tmux"
 -- By default it sends to the last active tmux pane
 -- Use :SlimeConfig to pin a pane if you want
 --
-vim.o.conceallevel = 2 -- set conceal level for obsidian plugin
