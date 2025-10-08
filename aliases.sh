@@ -117,6 +117,9 @@ alias struct="print-structure"
 # Obsidian
 # ==============================
 alias oo="cd ~/academia/notes"
+alias on="new-note"
+alias or='nvim ~/academia/notes/inbox/*.md'
+alias og='obsidian-group'
 
 # ==============================
 # Tmux Shortcuts

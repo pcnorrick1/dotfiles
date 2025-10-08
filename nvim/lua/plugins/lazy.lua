@@ -28,6 +28,7 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
+  { 'nvim-telescope/telescope-symbols.nvim'},
 
   --File tree
   {
@@ -68,6 +69,16 @@ require('lazy').setup({
     end,
   },
 
+  -- Obsidian
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    lazy = true,
+    ft = "markdown",
+    dependencies = {
+        "nvim-lua/plenary.nvim"
+    }
+  },
 
   -- LaTeX
   { "lervag/vimtex" },
