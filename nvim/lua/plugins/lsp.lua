@@ -16,6 +16,7 @@ cmp.setup({
     ["<C-k>"]     = cmp.mapping.select_prev_item(cmp_select),
   }),
   sources = cmp.config.sources({
+    { name = "copilot" },
     { name = "nvim_lsp" },
     { name = "ultisnips" },
   }, {
