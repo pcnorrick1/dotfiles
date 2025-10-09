@@ -25,6 +25,10 @@ vim.keymap.set("n", "<leader>oo", ":cd /Users/patricknorrick/academia/notes<cr>"
 --
 -- convert note to template and remove leading white space
 vim.keymap.set("n", "<leader>on", ":ObsidianTemplate note<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>")
+-- Apply source template and clean leading whitespace
+vim.keymap.set("n", "<leader>os",
+  ":ObsidianTemplate source<cr>:lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>"
+)
 -- strip date from note title and replace dashes with spaces
 -- must have cursor on title
 vim.keymap.set("n", "<leader>of", ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>")
@@ -42,3 +46,7 @@ vim.keymap.set("n", "<leader>oz", ":Telescope live_grep search_dirs={\"Users/pat
 vim.keymap.set("n", "<leader>ok", ":!mv '%:p' /Users/patricknorrick/academia/notes/zettelkasten<cr>:bd<cr>")
 -- delete file in current buffer
 vim.keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
+-- move file in current buffer to source-material folder
+vim.keymap.set("n", "<leader>osk",
+  ":!mv '%:p' /Users/patricknorrick/academia/notes/source-material/papers<cr>:bd<cr>"
+)
