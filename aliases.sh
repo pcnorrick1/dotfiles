@@ -120,7 +120,6 @@ alias oo="cd ~/academia/notes"
 alias on="new-note"
 alias os="new-source"
 alias or='nvim ~/academia/notes/inbox/*.md'
-alias og='obsidian-group'
 
 # ==============================
 # Tmux Shortcuts
