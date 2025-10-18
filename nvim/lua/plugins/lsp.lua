@@ -87,7 +87,7 @@ require("conform").setup({
   formatters_by_ft = {
     python   = { "isort", "black" },
     lua      = { "stylua" },
-    markdown = { "mdformat" },
+    markdown = {},
     tex      = { "latexindent" },
   },
   format_on_save = {
