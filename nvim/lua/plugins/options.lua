@@ -1,7 +1,7 @@
 vim.cmd("colorscheme catppuccin-macchiato") -- set color theme
 vim.cmd("colorscheme catppuccin-macchiato") -- set color theme
 
-vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.python3_host_prog = os.getenv("HOME") .. "/.venvs/nvim/bin/python"
 
 vim.opt.termguicolors = true --bufferline
 require("bufferline").setup{} --bufferline
