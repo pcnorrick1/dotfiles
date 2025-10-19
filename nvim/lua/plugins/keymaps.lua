@@ -21,3 +21,28 @@ vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>")
 
 -- Rename Variables
 vim.keymap.set("n", "<leader>rn", ":IncRename<CR>")
+
+--------------
+-- REPL Workflows
+--------------
+-- <leader>ss  Send current line
+-- <leader>sp  Send visual selection or paragraph
+-- <leader>sf  Send entire file
+
+local function send_current_line()
+  vim.cmd("SlimeSend")
+end
+
+local function send_visual_selection()
+  vim.cmd("SlimeSend")
+end
+
+local function send_entire_file()
+  vim.cmd("normal! ggVG")
+  vim.cmd("SlimeSend")
+end
+
+-- Shared send commands
+vim.keymap.set("n", "<leader>ss", send_current_line, { desc = "Send current line to REPL" })
+vim.keymap.set("v", "<leader>sp", send_visual_selection, { desc = "Send selection to REPL" })
+vim.keymap.set("n", "<leader>sf", send_entire_file, { desc = "Send entire file to REPL" })
