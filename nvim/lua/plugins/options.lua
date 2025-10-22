@@ -10,6 +10,7 @@ require("bufferline").setup{} --bufferline
 
 -- Send code to a REPL in another tmux pane
 vim.g.slime_target = "tmux"
+vim.g.slime_python_ipython = 1  -- use IPython for Python files
 -- By default it sends to the last active tmux pane
 -- Use :SlimeConfig to pin a pane if you want
 --
