@@ -27,11 +27,10 @@ cmp.setup({
 
 cmp.setup.filetype("tex", {
     sources = cmp.config.sources({
+        { name = "copilot" },
         { name = "vimtex" },
         { name = "ultisnips" },
         { name = "path" },
-    }, {
-        { name = "buffer" },
     })
 })
 
