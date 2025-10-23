@@ -3,7 +3,7 @@ vim.g.vimtex_compiler_method = "latexmk"
 vim.g.vimtex_compiler_progname = "nvr"
 vim.g.vimtex_quickfix_mode = 0  -- cleaner quickfix
 vim.g.vimtex_mappings_enabled = 1
-vim.g.vimtex_syntax_enabled = 0 -- gives syntax highlighting to treesitter
+vim.g.vimtex_syntax_enabled = 0
 
 -- UltiSnips settings (for LaTeX snippets)
 vim.g.UltiSnipsExpandTrigger = "<tab>"
@@ -16,4 +16,7 @@ vim.g.UltiSnipsSnippetDirectories = { vim.fn.stdpath("config") .. "/UltiSnips", 
 
 -- Handy VimTeX maps to remember:
 -- \ll compile; \lv view; \lc clean; ]m/[m next/prev section; ]]/[[ next/prev env
+
+-- Disable copilot tab completion so ultisnips can use it
+vim.g.copilot_no_tab_map = true
 

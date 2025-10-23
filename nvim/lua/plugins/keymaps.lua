@@ -46,3 +46,6 @@ end
 vim.keymap.set("n", "<leader>ss", send_current_line, { desc = "Send current line to REPL" })
 vim.keymap.set("v", "<leader>sp", send_visual_selection, { desc = "Send selection to REPL" })
 vim.keymap.set("n", "<leader>sf", send_entire_file, { desc = "Send entire file to REPL" })
+
+-- Copilot
+vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true, script = true })

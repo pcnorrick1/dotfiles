@@ -9,12 +9,38 @@ cmp.setup({
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<CR>"]      = cmp.mapping.confirm({ select = true }),
-    ["<C-j>"]     = cmp.mapping.select_next_item(cmp_select),
-    ["<C-k>"]     = cmp.mapping.select_prev_item(cmp_select),
-  }),
+mapping = cmp.mapping.preset.insert({
+  ["<C-Space>"] = cmp.mapping.complete(),
+  ["<CR>"]      = cmp.mapping.confirm({ select = true }),
+  ["<C-j>"]     = cmp.mapping.select_next_item(cmp_select),
+  ["<C-k>"]     = cmp.mapping.select_prev_item(cmp_select),
+  ["<C-e>"]     = cmp.mapping.abort(),  -- restores manual close
+
+  -- --- UltiSnips integration ---
+  ["<Tab>"] = function(fallback)
+  local fn = vim.fn
+  if fn["UltiSnips#CanExpandSnippet"]() == 1 then
+    fn["UltiSnips#ExpandSnippet"]()
+  elseif fn["UltiSnips#CanJumpForwards"]() == 1 then
+    fn["UltiSnips#JumpForwards"]()
+  elseif cmp.visible() then
+    cmp.select_next_item()
+  else
+    fallback()
+  end
+end,
+
+["<S-Tab>"] = function(fallback)
+  local fn = vim.fn
+  if fn["UltiSnips#CanJumpBackwards"]() == 1 then
+    fn["UltiSnips#JumpBackwards"]()
+  elseif cmp.visible() then
+    cmp.select_prev_item()
+  else
+    fallback()
+  end
+end,
+}),
   sources = cmp.config.sources({
     { name = "copilot" },
     { name = "nvim_lsp" },
